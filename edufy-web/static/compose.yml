@@ -1,0 +1,23 @@
+version: "3.9"
+volumes:
+  db_data:
+  
+services:
+  php-fpm:
+    container_name: eduweb
+    image: php:8.2-fpm-alpine
+    restart: unless-stopped
+    volumes:
+        - ./:/var/www/html
+
+  nginx:
+    container_name: eduserver
+    image: nginx:alpine
+    depends_on:
+        - php-fpm
+    restart: unless-stopped
+    ports:
+        - 8000:80
+    volumes:
+        - ./:/var/www/html
+        - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf

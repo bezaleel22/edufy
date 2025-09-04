@@ -1,0 +1,43 @@
+name = "llaweb"
+compatibility_date = "2023-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Pages configuration for SvelteKit on Cloudflare Pages
+pages_build_output_dir = ".svelte-kit/cloudflare"
+
+# KV Namespaces - BLOG_KV for blog content
+[[kv_namespaces]]
+binding = "BLOG_KV"
+id = "your_kv_namespace_id"
+preview_id = "your_preview_kv_namespace_id"
+
+# D1 Database - school_auth for user authentication and audit logs
+[[d1_databases]]
+binding = "D1"
+database_name = "school_auth" 
+database_id = "your_d1_database_id"
+
+# R2 Bucket - school-media for file storage
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "school-media"
+
+# Environment variables
+[env.production.vars]
+CMS_API_URL = "https://school.llacademy.ng"
+ENVIRONMENT = "production"
+DOMAIN = "llacademy.ng"
+
+[env.preview.vars]
+CMS_API_URL = "https://school.llacademy.ng"
+ENVIRONMENT = "preview" 
+DOMAIN = "llacademy.ng"
+
+[env.development.vars]
+CMS_API_URL = "http://localhost:8080"
+ENVIRONMENT = "development"
+DOMAIN = "localhost"
+
+# Build configuration
+[build]
+command = "npm run build"

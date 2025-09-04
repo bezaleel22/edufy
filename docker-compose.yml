@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  llaweb-cms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: llaweb-cms-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./cms.db:/app/cms.db
+      - ./kv_storage:/app/kv_storage
+      - ./migrations:/app/migrations
+    environment:
+      - RUST_LOG=debug
+      - DATABASE_URL=/app/cms.db
+      - SERVER_PORT=8080
+      - JWT_SECRET=dev-secret-key-change-in-production
+      - CORS_ORIGIN=http://localhost:5173,http://localhost:4173
+      - ENVIRONMENT=development
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  default:
+    name: llaweb-network
